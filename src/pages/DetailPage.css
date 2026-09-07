@@ -1,0 +1,55 @@
+/* DetailPage Styling */
+
+.detail-page {
+  width: 100%;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Breadcrumb */
+.detail-page__breadcrumb {
+  margin-bottom: 20px;
+}
+
+/* Main Container */
+.detail-page__container {
+  margin-bottom: 24px;
+}
+
+/* Actions */
+.detail-page__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 20px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .detail-page {
+    padding: 16px;
+  }
+
+  .detail-page__actions {
+    flex-direction: column;
+  }
+
+  .detail-page__actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .detail-page {
+    padding: 12px;
+  }
+
+  .detail-page__actions {
+    padding: 12px;
+    gap: 8px;
+  }
+}
