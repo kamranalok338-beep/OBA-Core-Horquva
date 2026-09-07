@@ -1,4 +1,4 @@
-import LoadingState from './components/shared/LoadingState';
+import React from 'react';
 
 function LoadingTest() {
   return (

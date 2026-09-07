@@ -36,7 +36,13 @@ const AssetCard = ({
         {owner && <span className="asset-card__owner">by {owner}</span>}
         {lastUpdated && (
           <span className="asset-card__date">
-            Updated {new Date(lastUpdated).toLocaleDateString()}
+            Updated {
+              lastUpdated instanceof Date 
+                ? lastUpdated.toLocaleDateString() 
+                : typeof lastUpdated === 'string' 
+                ? lastUpdated 
+                : String(lastUpdated)
+            }
           </span>
         )}
       </div>

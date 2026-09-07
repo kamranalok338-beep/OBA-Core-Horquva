@@ -1,63 +1,130 @@
 import React, { useState } from 'react';
 import AppShell from './components/layout/AppShell';
-import MainNav from './components/navigation/MainNav';
-import SearchBar from './components/search/SearchBar';
-import FilterPanel from './components/search/FilterPanel';
-import Pagination from './components/display/Pagination';
-import StatusBadge from './components/display/StatusBadge';
+import HomePage from './pages/HomePage';
+import SearchPage from './pages/SearchPage';
+import DetailPage from './pages/DetailPage';
+import IndexPage from './pages/IndexPage';
 import './App.css';
 
 function App() {
-  const [active, setActive] = useState('standards');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState('index');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedAssetId, setSelectedAssetId] = useState(null);
 
-  const suggestions = [
-    'API Design Standard',
-    'Database Naming Playbook',
-    'Microservices Best Practice',
-    'Security Runbook',
+  // Complete mock search results covering all 8 knowledge categories
+  const mockSearchResults = [
+    {
+      id: '1',
+      title: 'API Design Standard',
+      category: 'Standards',
+      status: 'approved',
+      summary: 'Guidelines for designing RESTful APIs.',
+      owner: 'Platform Team',
+      lastUpdated: '2026-08-01',
+    },
+    {
+      id: '2',
+      title: 'Database Naming Playbook',
+      category: 'Playbooks',
+      status: 'approved',
+      summary: 'Best practices for naming databases.',
+      owner: 'Data Team',
+      lastUpdated: '2026-08-05',
+    },
+    {
+      id: '3',
+      title: 'Microservices Best Practice',
+      category: 'Best Practices',
+      status: 'approved',
+      summary: 'Patterns for microservices architecture.',
+      owner: 'Architecture Team',
+      lastUpdated: '2026-08-10',
+    },
+    {
+      id: '4',
+      title: 'Deployment & Failover Procedure',
+      category: 'Runbooks',
+      status: 'approved',
+      summary: 'Step-by-step guidelines for executing production deployment rollbacks.',
+      owner: 'DevOps Team',
+      lastUpdated: '2026-08-12',
+    },
+    {
+      id: '5',
+      title: 'Post-Mortem: Database Failover',
+      category: 'Lessons Learned',
+      status: 'approved',
+      summary: 'Key takeaways and findings from the Q2 database incident.',
+      owner: 'SRE Team',
+      lastUpdated: '2026-08-15',
+    },
+    {
+      id: '6',
+      title: 'ADR 001: Event-Driven Architecture',
+      category: 'ADRs',
+      status: 'approved',
+      summary: 'Architectural Decision Record outlining Kafka implementation.',
+      owner: 'Architecture Team',
+      lastUpdated: '2026-08-18',
+    },
+    {
+      id: '7',
+      title: 'Domain Terminology & Glossary',
+      category: 'Glossary',
+      status: 'approved',
+      summary: 'Standardized terms and definitions used across engineering teams.',
+      owner: 'Core Team',
+      lastUpdated: '2026-08-20',
+    },
+    {
+      id: '8',
+      title: 'System Architecture Documentation',
+      category: 'Documentation',
+      status: 'approved',
+      summary: 'Overview of system design, network topologies, and data flows.',
+      owner: 'Platform Team',
+      lastUpdated: '2026-08-22',
+    },
   ];
+
+  const handleNavigate = (page, data = {}) => {
+    setCurrentPage(page);
+    if (data.query) setSearchQuery(data.query);
+    if (data.assetId) setSelectedAssetId(data.assetId);
+  };
 
   return (
     <AppShell appVersion="1.0.0">
-      <MainNav active={active} onNavigate={setActive} />
-      
-      <div style={{ padding: '20px' }}>
-        {/* Search Bar */}
-        <div style={{ marginBottom: '20px' }}>
-          <SearchBar
-            onSearch={(query) => console.log('Search:', query)}
-            suggestions={suggestions}
-          />
-        </div>
+      {currentPage === 'home' && (
+        <HomePage
+          onSearchClick={(query) => handleNavigate('search', { query })}
+          onAssetClick={(id) => handleNavigate('detail', { assetId: id })}
+        />
+      )}
 
-        {/* Layout with Filter and Content */}
-        <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '20px' }}>
-          {/* Sidebar */}
-          <FilterPanel onFilterChange={(filters) => console.log(filters)} />
+      {currentPage === 'search' && (
+        <SearchPage
+          query={searchQuery}
+          results={mockSearchResults}
+          onSearchChange={(query) => handleNavigate('search', { query })}
+          onAssetClick={(id) => handleNavigate('detail', { assetId: id })}
+        />
+      )}
 
-          {/* Main Content */}
-          <div>
-            <h1>Search Results</h1>
-            
-            {/* Status Badge Example */}
-            <div style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
-              <StatusBadge status="approved" />
-              <StatusBadge status="draft" />
-              <StatusBadge status="deprecated" />
-            </div>
+      {currentPage === 'detail' && (
+        <DetailPage
+          asset={mockSearchResults.find((a) => a.id === selectedAssetId)}
+          relatedAssets={mockSearchResults.filter((a) => a.id !== selectedAssetId)}
+          onRelatedClick={(id) => handleNavigate('detail', { assetId: id })}
+        />
+      )}
 
-            {/* Pagination */}
-            <Pagination
-              currentPage={currentPage}
-              totalPages={5}
-              onPageChange={setCurrentPage}
-            />
-            
-            <p>Page {currentPage} content goes here...</p>
-          </div>
-        </div>
-      </div>
+      {currentPage === 'index' && (
+        <IndexPage
+          assets={mockSearchResults}
+          onAssetClick={(id) => handleNavigate('detail', { assetId: id })}
+        />
+      )}
     </AppShell>
   );
 }

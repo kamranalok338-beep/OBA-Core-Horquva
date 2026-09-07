@@ -1,4 +1,4 @@
-import Button from './components/shared/Button';
+import React from 'react';
 
 function ButtonTest() {
   return (
