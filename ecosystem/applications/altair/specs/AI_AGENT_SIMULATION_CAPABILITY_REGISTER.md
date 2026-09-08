@@ -1,6 +1,5 @@
 # AI Agent and Simulation Capability Register
 
-**Status:** No capability approved or implemented
 **Owner:** Gul Daraz - AI Agent & Simulation Engineering
 **Roadmap:** Part 2, Steps 7 and 8
 

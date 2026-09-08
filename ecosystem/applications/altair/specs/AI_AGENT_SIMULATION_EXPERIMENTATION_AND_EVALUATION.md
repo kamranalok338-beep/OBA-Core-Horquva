@@ -1,6 +1,5 @@
 # AI Agent and Simulation Experimentation
 
-**Status:** Foundation
 **Owner:** Gul Daraz - AI Agent & Simulation Engineering
 **Roadmap:** Part 2, Steps 5 and 6
 
